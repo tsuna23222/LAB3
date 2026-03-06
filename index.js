@@ -15,6 +15,11 @@ app.get('/', (req, res) => {
     res.send('Hello World!');
 });
 
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something broke!');
+});
+
 app.get('/about', (req, res) => {
     res.send('About Us');
 });
