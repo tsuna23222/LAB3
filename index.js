@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const port = 3000;
 
-// 1. Middleware FIRST
+// Middleware
 app.use(express.json());
 app.use(express.static('public'));
 app.use((req, res, next) => {
@@ -10,26 +10,35 @@ app.use((req, res, next) => {
     next();
 });
 
-// 2. Routes in the MIDDLE
-app.get('/', (req, res) => {
-    res.send('Hello World!');
-});
+// Items list
+const items = ['Apple', 'Banana', 'Orange'];
 
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Something broke!');
+// Routes
+app.get('/', (req, res) => {
+    res.send('Hello, World!');
 });
 
 app.get('/about', (req, res) => {
     res.send('About Us');
 });
 
-app.post('/submit', (req, res) => {
-    const data = req.body;
-    res.send(`Received: ${JSON.stringify(data)}`);
+app.get('/items', (req, res) => {
+    res.json(items);
 });
 
-// 3. Start server LAST
+app.post('/items', (req, res) => {
+    const newItem = req.body.item;
+    items.push(newItem);
+    res.json(items);
+});
+
+// Error handling
+app.use((err, req, res, next) => {
+    console.error(err.stack);
+    res.status(500).send('Something broke!');
+});
+
+// Start server
 app.listen(port, () => {
     console.log(`Server running at http://localhost:${port}`);
 });
