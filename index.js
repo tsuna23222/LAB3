@@ -1,31 +1,30 @@
-const express  = require('express');
+const express = require('express');
 const app = express();
 const port = 3000;
 
+// 1. Middleware FIRST
+app.use(express.json());
 app.use(express.static('public'));
-
-app.get('/', (req, res) => {
-    res.send('Hello World!');
+app.use((req, res, next) => {
+    console.log(`${req.method} ${req.url}`);
+    next();
 });
 
-app.listen(port, () => {
-    console.log(`Server running at http://localhost:${port}`); 
+// 2. Routes in the MIDDLE
+app.get('/', (req, res) => {
+    res.send('Hello World!');
 });
 
 app.get('/about', (req, res) => {
     res.send('About Us');
 });
 
-app.use(express.json());
-
 app.post('/submit', (req, res) => {
     const data = req.body;
     res.send(`Received: ${JSON.stringify(data)}`);
 });
 
-
-app.use((req, res) => {
-    console.log(`${req.method} ${req.url}`);
-    next();
+// 3. Start server LAST
+app.listen(port, () => {
+    console.log(`Server running at http://localhost:${port}`);
 });
-
