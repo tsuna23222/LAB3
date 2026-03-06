@@ -10,9 +10,6 @@ app.use((req, res, next) => {
     next();
 });
 
-// Items list
-const items = ['Apple', 'Banana', 'Orange'];
-
 // Routes
 app.get('/', (req, res) => {
     res.send('Hello, World!');
@@ -21,6 +18,7 @@ app.get('/', (req, res) => {
 app.get('/about', (req, res) => {
     res.send('About Us');
 });
+const items = ['Apple', 'Banana', 'Orange'];
 
 app.get('/items', (req, res) => {
     res.json(items);
